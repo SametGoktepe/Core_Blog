@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+<br />
+<button type="button" id="btngetlist" class="btn btn-danger">Author List</button>
+<br />
+<br />
+<div id="writerlist">
+</div>
+<br />
+<button type="button" id="btngetbyid" class="btn btn-success">Author Get</button>
+<br />
+<div id="writerget"></div>
+<div>
+    <input type="text" id="writerid" placeholder="Author Id value" class="form-control-sm" />
+</div>
+<br />
+<button type="button" id="btnadd" class="btn btn-info">Author Add</button>
+<br />
+<div>
+    <input type="text" id="writerId" class="form-control-sm" />
+    <input type="text" id="writerName" class="form-control-sm" />
+</div>
+<br />
+<div>
+    <button type="button" id="btndelete" class="btn btn-danger">Author Delete</button>
+    <br />
+    <input type="text" id="txtId" class="form-control-sm" />
+</div>
+<br />
+<button type="button" id="btnupdate" class="btn btn-outline-danger">Author Update</button>
+<br />
+<input type="text" id="txtId1" class="form-control-sm" placeholder="Update Id" />
+<input type="text" id="txtName1" class="form-control-sm" placeholder="Update name" />
+
+
+
+
+@section scripts{
+    <script>
+        $("#btngetlist").click(function () {
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/WriterList/",
+                success: function (func) {
+                    let w = jQuery.parseJSON(func)
+                    console.log(w);
+                    let tablehtml = "<table class=table table-bordered> <tr><th>ID</th> <th>Author Name</th></tr>";
+                    $.each(w, (index, value) => {
+                        tablehtml += `<tr><td>${value.Id}</td> <td>${value.name}</td></tr>`
+                    });
+                    tablehtml += "</table>"
+                    $("#writerlist").html(tablehtml);
+                }
+            });
+        });
+
+        $("#btngetbyid").click(x => {
+            let id = $("#writerid").val();
+            $.ajax({
+                contentType: "appliaction/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/GetWriterByID/",
+                data: { writerid: id },
+                success: function (func) {
+                    let w = jQuery.parseJSON(func);
+                    console.log(w);
+                    let getValue = `<table class=table table-bordered> <tr><th>ID</th> <th>Author Name</th></tr> <tr><td>${w.Id}</td><td>${w.name}</td></tr></table>`;
+                    $("#writerget").html(getValue);
+                }
+            })
+        })
+
+        $("#btnadd").click(function () {
+            let writer = {
+                Id: $("#writerId").val(),
+                Name: $("#writerName").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "/Admin/Writer/AddWriter/",
+                data: writer,
+                success: function (func) {
+                    let result = jQuery.parseJSON(func);
+                    alert("Job is success");
+                }
+            })
+        })
+
+        $("#btndelete").click(x => {
+            let id = $("#txtId").val();
+            $.ajax({
+                url: "/Admin/Writer/DeleteWriter/" + id,
+                type: "post",
+                dataType: "json",
+                success: function (func) {
+                    loadData();
+                }
+            })
+        })
+
+        $("#btnupdate").click(function () {
+            let writer = {
+                Id: $("#txtId1").val(),
+                name: $("#txtName1").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "/Admin/Writer/UpdateWriter/",
+                data: writer,
+                success: function (func) {
+                    alert("Update is Success");
+                }
+            });
+        })
+    </script>
+}

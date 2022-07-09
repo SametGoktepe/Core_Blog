@@ -1,0 +1,24 @@
+﻿using DataAccessLayer.Abstarct;
+using DataAccessLayer.Concrete;
+using DataAccessLayer.Repositories;
+using EntityLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessLayer.EntityFramework
+{
+    public class EFCommentRepository : GenericRepository<Comment>, ICommentDAL
+    {
+        public List<Comment> GetListWithBlog()
+        {
+            using (var c = new Context())
+            {
+                return c.Comments.Include(a => a.Blog).ToList();
+            }
+        }
+    }
+}

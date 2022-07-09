@@ -1,0 +1,40 @@
+﻿@using EntityLayer.Concrete
+@model List<Blog>
+@{
+    ViewData["Title"] = "BlogListByWriter";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h1>Author's Blog</h1>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Blog Title</th>
+                        <th>Created Date</th>
+                        <th>Category</th>
+                        <th>Delete</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tbody>
+                        <tr>
+                            <td>@item.BlogID</td>
+                            <td>@item.BlogTitle</td>
+                            <td>@(((DateTime)item.CreateDate).ToString("dd-MM-yyyy"))</td>
+                            <td>@item.Category.CategoryName</td>
+                            <td><a href="/Blog/DeleteBlog/@item.BlogID" class="btn btn-gradient-danger">Delete</a></td>
+                            <td><a href="/Blog/EditBlog/@item.BlogID" class="btn btn-gradient-warning">Update</a></td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+            <a href="/Blog/BlogAdd" class="btn btn-gradient-primary">New Blog</a>
+        </div>
+    </div>
+</div>

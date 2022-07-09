@@ -1,0 +1,45 @@
+﻿@model Core_Blog.Models.AddProfileImage
+@{
+    ViewData["Title"] = "AuthorAdd";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<form class="form-group" method="post" enctype="multipart/form-data">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Author Profile Edit</h4>
+                <br />
+                @Html.HiddenFor(x => x.AuthorID, new { @class = "form-control" })
+                <div class="forms-sample">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Name & Last Name</label>
+                        @Html.TextBoxFor(x => x.AuthorName, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail3">Email address</label>
+                        @Html.TextBoxFor(x => x.AuthorMail, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword">Password</label>
+                        @Html.PasswordFor(x => x.AuthorPassword, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" name="AuthorImage" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea1">About</label>
+                        @Html.TextAreaFor(x => x.AuthorAbout, 10, 3, new { @class = "form-control" })
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/writer/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/writer/assets/js/off-canvas.js"></script>
+    <script src="~/writer/assets/js/hoverable-collapse.js"></script>
+    <script src="~/writer/assets/js/misc.js"></script>
+</form>
+

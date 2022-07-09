@@ -1,0 +1,88 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace DataAccessLayer.Migrations
+{
+    public partial class mig_add_message_relative : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Authors_Authors_AuthorID1",
+                table: "Authors");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Authors_AuthorID1",
+                table: "Authors");
+
+            migrationBuilder.DropColumn(
+                name: "AuthorID1",
+                table: "Authors");
+
+            migrationBuilder.CreateTable(
+                name: "Messages2",
+                columns: table => new
+                {
+                    MessageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderID = table.Column<int>(type: "int", nullable: true),
+                    ReciverID = table.Column<int>(type: "int", nullable: true),
+                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MessageDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MessageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages2", x => x.MessageID);
+                    table.ForeignKey(
+                        name: "FK_Messages2_Authors_ReciverID",
+                        column: x => x.ReciverID,
+                        principalTable: "Authors",
+                        principalColumn: "AuthorID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages2_Authors_SenderID",
+                        column: x => x.SenderID,
+                        principalTable: "Authors",
+                        principalColumn: "AuthorID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages2_ReciverID",
+                table: "Messages2",
+                column: "ReciverID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages2_SenderID",
+                table: "Messages2",
+                column: "SenderID");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Messages2");
+
+            migrationBuilder.AddColumn<int>(
+                name: "AuthorID1",
+                table: "Authors",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Authors_AuthorID1",
+                table: "Authors",
+                column: "AuthorID1");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Authors_Authors_AuthorID1",
+                table: "Authors",
+                column: "AuthorID1",
+                principalTable: "Authors",
+                principalColumn: "AuthorID",
+                onDelete: ReferentialAction.Restrict);
+        }
+    }
+}
